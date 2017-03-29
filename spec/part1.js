@@ -489,7 +489,7 @@
             return item + 1;
           }
         };
-        
+
         var total = _.reduce([1, 1, 2], returnFalsy);
         expect(total).to.equal(3);
       });
@@ -502,7 +502,7 @@
         expect(result).to.equal(4);
       });
 
-      it('Fill me in with a description of the behavior this test is checking for', function() {
+      it('should continue to multiply 0(memo) to each element returning 0', function() {
         var result = _.reduce([1, 2, 3], function(memo, item) {
           return memo * item;
         }, 0);

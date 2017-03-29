@@ -224,12 +224,33 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(accumulator, element ) {
+      if ( !iterator(element) ) {
+        accumulator = false;
+      }
+      return accumulator;
+    }, true)
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    iterator = iterator || _.identity;
+
+    if ( collection.length === 0 ) {
+      return false
+    }
+    var temp = false;
+    _.every(collection, function(element) {
+      if ( iterator(element) ){
+        temp = true;
+      }
+    });
+    return temp;
+
+    
   };
 
 
@@ -252,11 +273,38 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var object = {};
+
+    _.each(arguments, function(value) {
+      Object.assign(object, value);
+    });
+    return object;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    // var arr = arguments;
+    // var results = arguments[0];
+
+    // _.each(arr, function(value, key) {
+    //   console.log(value, key)
+    //   if (!results.hasOwnProperty(key)) {
+    //     results[key] = value;
+    //   }
+    // });
+
+    // return results;
+    //var destination = arguments[0];
+
+    _.each(arguments, function(arg) {
+      for (var key in arg) {
+        if (!obj.hasOwnProperty(key)) {
+          obj[key] = arg[key]
+        }
+      }
+    });
+    return obj;
   };
 
 
@@ -300,6 +348,16 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+
+    var answerKey = {};
+
+    return function() {
+      var args = JSON.stringify(arguments);
+      if ( !answerKey.hasOwnProperty(args) ) {
+        answerKey[args] = func.apply(this, arguments);
+      }
+      return answerKey[args];
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls

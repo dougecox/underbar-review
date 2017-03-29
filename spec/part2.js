@@ -404,7 +404,7 @@
 
       it('should produce the same result as the non-memoized version', function() {
         expect(add(1, 2)).to.equal(3);
-        expect(memoAdd(1, 2)).to.equal(3);
+        expect(memoAdd(1, 2)).to.equal(3); 
       });
 
       it('should give different results for different arguments', function() {
